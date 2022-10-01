@@ -464,18 +464,58 @@ def clicked3():#To delete a record
     file.close()
 
 def clicked4():
+
+    def done():
+        new_content=[name.get(),
+            [entry_row_2_1.get(),entry_row_2_2.get(),entry_row_2_3.get(),entry_row_2_4.get(),entry_row_2_5.get(),entry_row_2_6.get(),entry_row_2_7.get(),entry_row_2_8.get()],
+            [entry_row_3_1.get(),entry_row_3_2.get(),entry_row_3_3.get(),entry_row_3_4.get(),entry_row_3_5.get(),entry_row_3_6.get(),entry_row_3_7.get(),entry_row_3_8.get()],
+            [entry_row_4_1.get(),entry_row_4_2.get(),entry_row_4_3.get(),entry_row_4_4.get(),entry_row_4_5.get(),entry_row_4_6.get(),entry_row_4_7.get(),entry_row_4_8.get()],
+            [entry_row_5_1.get(),entry_row_5_2.get(),entry_row_5_3.get(),entry_row_5_4.get(),entry_row_5_5.get(),entry_row_5_6.get(),entry_row_5_7.get(),entry_row_5_8.get()],
+            [entry_row_6_1.get(),entry_row_6_2.get(),entry_row_6_3.get(),entry_row_6_4.get(),entry_row_6_5.get(),entry_row_6_6.get(),entry_row_6_7.get(),entry_row_6_8.get()],
+            [entry_row_7_1.get(),entry_row_7_2.get(),entry_row_7_3.get(),entry_row_7_4.get(),entry_row_7_5.get(),entry_row_7_6.get(),entry_row_7_7.get(),entry_row_7_8.get()],
+            ]
+        file=open(r".\Teacher_Records.bin","rb")
+        content=pickle.load(file)
+        file.close()
+        for i in content:
+            print("--------------------------------",i)
+            for j in i:
+                if j[0]==clicked.get():
+                    print(j)
+                    content.remove(i)
+                    content.append(new_content)
+        file=open(r".\Teacher_Records.bin","wb")
+        pickle.dump(content,file)
+        file.close()
+        edit_teacher_detial.destroy()
+
+
+
     edit_teacher_detial=Toplevel()
 
     row1=LabelFrame(edit_teacher_detial,padx=10)
     
-    options = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-    clicked = StringVar()
-    clicked.set( "Monday" )
-    drop = OptionMenu( edit_teacher_detial , clicked , *options )
+    options = []
+    file=open(r".\Teacher_Records.bin","rb")
+    content=pickle.load(file)
+    file.close()
 
+    for i in content:
+        for j in i:
+            options.append(j)
+            break
+    print(options)
+
+    label_info_2=Label(edit_teacher_detial,text='select the name whose detail you want to change').grid(row=0,column=0)
+    clicked = StringVar()
+    clicked.set( options[0] )
+    drop = OptionMenu( edit_teacher_detial , clicked , *options )
+    drop.grid(row=1,column=0)
+    button1=Button(edit_teacher_detial,text="Change details!!!",command=done).grid(row=1,column=1)
+    label_info=Label(edit_teacher_detial,text="Enter the new name to which you want to change ->").grid(row=2,column=0)
     name=Entry(edit_teacher_detial)
-    name.grid(row=1,column=0)
-    #button1=Button(edit_teacher_detial,text="Edit details",command=done).grid(row=1,column=1)
+    name.grid(row=2,column=1)
+    
     
 
     
@@ -614,7 +654,7 @@ def clicked4():
     entry_row_7_8=Entry(row1)
     entry_row_7_8.grid(row=6,column=8)
 
-    row1.grid(row=4,column=0)
+    row1.grid(row=10,column=0,columnspan=10)
 
 
 
